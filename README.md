@@ -1,6 +1,6 @@
 # Operação Cifra Oculta
 
-Bem-vindo ao repositório de **Operação Cifra Oculta**, um minigame web educativo construído para ensinar o pilar da **Confidencialidade** na segurança da informação, utilizando uma estética de anime/espionagem (Persona 5 style).
+Bem-vindo ao repositório de **Operação Cifra Oculta**, um minigame web educativo construído para ensinar o pilar da **Confidencialidade** na segurança da informação, utilizando uma estética de espionagem (Persona 5 style).
 
 ## 🏗️ Arquitetura do Projeto
 
