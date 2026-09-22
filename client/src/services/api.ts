@@ -162,7 +162,7 @@ function simulateDispatchFallback(equipment: string[], customPayload?: string): 
     equipmentUsed: equipment,
     stats: { hasCofre, hasLista, hasAntivirus, hasTurbo, transitSpeedMs: hasTurbo ? 400 : 1200 },
     triad: { connection: 100, data: 100, secret: hasCofre ? 100 : 0 },
-    payload: { original: payload, isEncrypted: hasCofre, ciphertext: encryptedPayload || undefined, iv: fakeIv, authTag: "fake-auth", hashSha256: fakeHash },
+    payload: { original: payload, isEncrypted: hasCofre, ciphertext: encryptedPayload || null, iv: fakeIv, authTag: "fake-auth", hashSha256: fakeHash },
     nodeLogs,
     summary: {
       outcome: hasCofre ? "VITÓRIA CIFRADA" : "DERROTA SILENCIOSA",
@@ -171,7 +171,20 @@ function simulateDispatchFallback(equipment: string[], customPayload?: string): 
   };
 }
 
-const FALLBACK_QUIZ: QuizQuestion[] = [
+interface FallbackQuizOption {
+  id: string;
+  text: string;
+  correct?: boolean;
+}
+
+interface FallbackQuizQuestion {
+  id: number;
+  question: string;
+  options: FallbackQuizOption[];
+  explanation: string;
+}
+
+const FALLBACK_QUIZ_DATA: FallbackQuizQuestion[] = [
   {
     id: 1,
     question: "Por que o Firewall não impediu o Agente V de ler as coordenadas?",
@@ -207,25 +220,40 @@ const FALLBACK_QUIZ: QuizQuestion[] = [
   }
 ];
 
+const FALLBACK_QUIZ: QuizQuestion[] = FALLBACK_QUIZ_DATA.map(q => ({
+  id: q.id,
+  question: q.question,
+  options: q.options.map(o => ({ id: o.id, text: o.text }))
+}));
+
 function simulateQuizEvaluation(answers: Record<number, string>): QuizEvaluationResult {
   let score = 0;
-  const results = [];
-  for (const q of FALLBACK_QUIZ) {
+  const feedback = [];
+  for (const q of FALLBACK_QUIZ_DATA) {
     const userAnswer = answers[q.id];
     const correctOption = q.options.find(o => o.correct);
     const isCorrect = userAnswer === correctOption?.id;
     if (isCorrect) score++;
-    results.push({
+    feedback.push({
       questionId: q.id,
-      correct: isCorrect,
+      question: q.question,
+      userAnswer: userAnswer || '',
       correctAnswer: correctOption?.id || '',
+      isCorrect: isCorrect,
       explanation: q.explanation
     });
   }
+  
+  const percentage = (score / FALLBACK_QUIZ_DATA.length) * 100;
+  const passed = score === FALLBACK_QUIZ_DATA.length;
+
   return {
     score,
-    total: FALLBACK_QUIZ.length,
-    passed: score === FALLBACK_QUIZ.length,
-    results
+    total: FALLBACK_QUIZ_DATA.length,
+    percentage,
+    passed,
+    title: passed ? "OPERAÇÃO CONCLUÍDA" : "FALHA NA OPERAÇÃO",
+    badge: passed ? "Mestre da Confidencialidade" : "Recruta em Treinamento",
+    feedback
   };
 }
