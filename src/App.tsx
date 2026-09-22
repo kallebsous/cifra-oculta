@@ -12,7 +12,7 @@ import { PhaseOneResultScreen } from './screens/PhaseOneResultScreen';
 import { PhaseTwoScreen } from './screens/PhaseTwoScreen';
 import { PhaseThreeScreen } from './screens/PhaseThreeScreen';
 import { VictoryScreen } from './screens/VictoryScreen';
-import { fetchEquipmentList, dispatchPacketApi } from './services/api';
+import { fetchEquipmentList, dispatchPacketApi } from './engine/gameEngine';
 import { sound } from './audio/soundEffects';
 import { User, Satellite, Ghost, Search, Volume2, VolumeX, Menu } from 'lucide-react';
 

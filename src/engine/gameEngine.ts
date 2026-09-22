@@ -58,45 +58,24 @@ export async function fetchEquipmentList(): Promise<Equipment[]> {
 }
 
 export async function dispatchPacketApi(equipment: string[], customPayload?: string): Promise<DispatchResult> {
-  try {
-    const res = await fetch(`${API_BASE}/dispatch`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ equipment, customPayload })
-    });
-    if (!res.ok) throw new Error('Erro ao despachar pacote');
-    return await res.json();
-  } catch (err) {
-    console.warn('[API] Usando dispatch de fallback local', err);
-    return simulateDispatchFallback(equipment, customPayload);
-  }
+  // Simula latência de rede realista (400ms a 1200ms dependendo do equipamento)
+  const hasTurbo = equipment.includes('turbo');
+  const delay = hasTurbo ? 400 : 1200;
+  await new Promise(resolve => setTimeout(resolve, delay));
+  
+  return simulateDispatchFallback(equipment, customPayload);
 }
 
 export async function fetchQuiz(): Promise<QuizQuestion[]> {
-  try {
-    const res = await fetch(`${API_BASE}/quiz`);
-    if (!res.ok) throw new Error('Erro ao carregar quiz');
-    const data = await res.json();
-    return data.questions;
-  } catch (err) {
-    console.warn('[API] Usando quiz local de fallback', err);
-    return FALLBACK_QUIZ;
-  }
+  // Simula latência de rede leve
+  await new Promise(resolve => setTimeout(resolve, 300));
+  return FALLBACK_QUIZ;
 }
 
 export async function evaluateQuizApi(answers: Record<number, string>): Promise<QuizEvaluationResult> {
-  try {
-    const res = await fetch(`${API_BASE}/quiz/evaluate`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ answers })
-    });
-    if (!res.ok) throw new Error('Erro ao submeter quiz');
-    return await res.json();
-  } catch (err) {
-    console.warn('[API] Usando evaluation local de fallback', err);
-    return simulateQuizEvaluation(answers);
-  }
+  // Simula latência de processamento
+  await new Promise(resolve => setTimeout(resolve, 500));
+  return simulateQuizEvaluation(answers);
 }
 
 // --- FALLBACK LOGIC PARA VERCEL (FRONTEND ONLY) ---

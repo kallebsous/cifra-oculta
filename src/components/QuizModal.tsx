@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { QuizQuestion, QuizEvaluationResult } from '../types/game';
-import { fetchQuiz, evaluateQuizApi } from '../services/api';
+import { fetchQuiz, evaluateQuizApi } from '../engine/gameEngine';
 import { sound } from '../audio/soundEffects';
 import './QuizModal.css';
 
