@@ -1,0 +1,338 @@
+/* ---------- Screens & Stages ---------- */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+.screen.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 70px 20px 190px;
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+h1.title-lg, h2.stage-title {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.03em;
+  margin: 0 0 6px;
+  line-height: 0.95;
+}
+h2.stage-title {
+  font-size: clamp(28px, 5vw, 44px);
+  color: var(--paper);
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.8);
+}
+.stage-sub {
+  color: var(--paper-dim);
+  font-size: 14px;
+  margin: 0 0 40px;
+  max-width: 500px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+/* Dossier Card */
+.dossier-card {
+  background: rgba(14, 14, 16, 0.95);
+  border: 2px solid var(--gold);
+  padding: 24px 32px;
+  font-family: 'Space Mono', monospace;
+  box-shadow: 8px 8px 0 rgba(0,0,0,0.8);
+  clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
+  min-width: 300px;
+  max-width: 600px;
+  margin-bottom: 20px;
+}
+.dossier-header {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--gold);
+  border-bottom: 2px solid var(--gold);
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+  letter-spacing: 0.05em;
+}
+.dossier-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 14px;
+  gap: 24px;
+}
+.dossier-row span {
+  color: var(--paper-dim);
+}
+
+/* Entry Overlay */
+.entry-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 24px;
+}
+.entry-overlay .blink {
+  animation: glitch-anim 2s infinite linear alternate-reverse;
+  color: var(--gold);
+  font-family: 'Space Mono', monospace;
+  font-size: 20px;
+  position: relative;
+}
+
+.entry-overlay .blink::before,
+.entry-overlay .blink::after {
+  content: "CLIQUE PARA INICIAR O SISTEMA";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--ink);
+}
+
+.entry-overlay .blink::before {
+  left: 2px;
+  text-shadow: -2px 0 var(--red);
+  clip: rect(24px, 550px, 90px, 0);
+  animation: glitch-anim-2 3s infinite linear alternate-reverse;
+}
+
+.entry-overlay .blink::after {
+  left: -2px;
+  text-shadow: -2px 0 var(--safe);
+  clip: rect(85px, 550px, 140px, 0);
+  animation: glitch-anim 2.5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+  0% { clip: rect(27px, 9999px, 86px, 0); }
+  5% { clip: rect(62px, 9999px, 95px, 0); }
+  10% { clip: rect(10px, 9999px, 66px, 0); }
+  15% { clip: rect(98px, 9999px, 20px, 0); }
+  20% { clip: rect(41px, 9999px, 80px, 0); }
+  25% { clip: rect(81px, 9999px, 19px, 0); }
+  30% { clip: rect(31px, 9999px, 91px, 0); }
+  35% { clip: rect(76px, 9999px, 16px, 0); }
+  40% { clip: rect(11px, 9999px, 63px, 0); }
+  45% { clip: rect(65px, 9999px, 49px, 0); }
+  50% { clip: rect(96px, 9999px, 18px, 0); }
+  55% { clip: rect(23px, 9999px, 82px, 0); }
+  60% { clip: rect(48px, 9999px, 7px, 0); }
+  65% { clip: rect(8px, 9999px, 39px, 0); }
+  70% { clip: rect(57px, 9999px, 52px, 0); }
+  75% { clip: rect(90px, 9999px, 28px, 0); }
+  80% { clip: rect(19px, 9999px, 97px, 0); }
+  85% { clip: rect(72px, 9999px, 44px, 0); }
+  90% { clip: rect(34px, 9999px, 88px, 0); }
+  95% { clip: rect(89px, 9999px, 12px, 0); }
+  100% { clip: rect(5px, 9999px, 73px, 0); }
+}
+
+@keyframes glitch-anim-2 {
+  0% { clip: rect(65px, 9999px, 100px, 0); }
+  5% { clip: rect(52px, 9999px, 74px, 0); }
+  10% { clip: rect(79px, 9999px, 85px, 0); }
+  15% { clip: rect(75px, 9999px, 5px, 0); }
+  20% { clip: rect(67px, 9999px, 61px, 0); }
+  25% { clip: rect(14px, 9999px, 79px, 0); }
+  30% { clip: rect(1px, 9999px, 2px, 0); }
+  35% { clip: rect(86px, 9999px, 30px, 0); }
+  40% { clip: rect(24px, 9999px, 92px, 0); }
+  45% { clip: rect(43px, 9999px, 45px, 0); }
+  50% { clip: rect(92px, 9999px, 16px, 0); }
+  55% { clip: rect(37px, 9999px, 57px, 0); }
+  60% { clip: rect(82px, 9999px, 25px, 0); }
+  65% { clip: rect(16px, 9999px, 90px, 0); }
+  70% { clip: rect(98px, 9999px, 42px, 0); }
+  75% { clip: rect(29px, 9999px, 68px, 0); }
+  80% { clip: rect(56px, 9999px, 11px, 0); }
+  85% { clip: rect(7px, 9999px, 83px, 0); }
+  90% { clip: rect(49px, 9999px, 36px, 0); }
+  95% { clip: rect(60px, 9999px, 95px, 0); }
+  100% { clip: rect(32px, 9999px, 50px, 0); }
+}
+
+/* ---------- Title Screen ---------- */
+.calendar-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--panel);
+  border: 2px solid var(--paper);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+  padding: 8px 20px 8px 14px;
+  margin-bottom: 32px;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.5);
+}
+.calendar-chip .day {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px;
+  color: var(--red);
+  line-height: 0.8;
+}
+.calendar-chip .meta {
+  text-align: left;
+}
+.calendar-chip .meta b {
+  display: block;
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  color: var(--paper);
+}
+.calendar-chip .meta span {
+  font-size: 12px;
+  color: var(--paper-dim);
+}
+
+h1.title-lg {
+  font-size: clamp(48px, 10vw, 92px);
+  color: var(--paper);
+  text-shadow: 6px 6px 0 var(--red), 10px 10px 0 rgba(0, 0, 0, 0.7);
+  letter-spacing: 0.04em;
+}
+.subtitle-cap {
+  font-size: 16px;
+  letter-spacing: 0.16em;
+  color: var(--gold);
+  margin: 4px 0 32px;
+  font-weight: 700;
+  text-shadow: 2px 2px 0 #000;
+}
+
+/* ---------- Results & Recap ---------- */
+.result-banner {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(32px, 6vw, 54px);
+  padding: 6px 28px;
+  display: inline-block;
+  margin-bottom: 6px;
+  clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+}
+.result-banner.fail {
+  background: var(--red);
+  color: #fff;
+}
+.result-banner.win {
+  background: var(--safe);
+  color: #04120a;
+}
+.stars {
+  font-size: 38px;
+  letter-spacing: 6px;
+  margin: 10px 0 18px;
+  color: var(--gold);
+}
+.stars .dim {
+  opacity: 0.22;
+}
+
+.recap-table {
+  width: min(660px, 94vw);
+  margin: 18px auto 8px;
+  text-align: left;
+  border: 1.5px solid rgba(242, 239, 233, 0.2);
+  animation: rankStamp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  opacity: 0;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.4);
+}
+
+@keyframes rankStamp {
+  0% { transform: rotate(-25deg) scale(2); opacity: 0; }
+  100% { transform: rotate(-8deg) scale(1); opacity: 1; }
+}
+
+.recap-table .row {
+  display: grid;
+  grid-template-columns: 1.3fr 0.9fr 0.9fr;
+  border-top: 1px solid rgba(242, 239, 233, 0.12);
+  font-size: 15px;
+}
+.recap-table .row:first-child {
+  border-top: none;
+  background: rgba(255, 255, 255, 0.06);
+  font-weight: 700;
+}
+.recap-table .row > div {
+  padding: 10px 12px;
+}
+.recap-table .row:first-child > div {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--paper-dim);
+}
+.safe-text {
+  color: var(--safe);
+  font-weight: 700;
+}
+.leak-text {
+  color: var(--leak);
+  font-weight: 700;
+}
+
+.btn-row {
+  display: flex;
+  gap: 16px;
+  margin-top: 26px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+@media (max-width: 600px) {
+  h1.title-lg {
+    font-size: clamp(36px, 12vw, 48px);
+    text-shadow: 4px 4px 0 var(--red), 6px 6px 0 rgba(0, 0, 0, 0.7);
+  }
+  .subtitle-cap {
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    margin-bottom: 24px;
+  }
+  .dossier-card {
+    min-width: 280px;
+    padding: 16px 20px;
+    margin-bottom: 4vh !important;
+  }
+  .dossier-header {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+  .dossier-row {
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+  .entry-overlay .blink {
+    font-size: 14px;
+  }
+  .calendar-chip {
+    padding: 6px 14px 6px 10px;
+    margin-bottom: 24px;
+  }
+  .calendar-chip .day {
+    font-size: 24px;
+  }
+}

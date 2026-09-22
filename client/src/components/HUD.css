@@ -1,0 +1,161 @@
+/* ---------- top HUD (triad) ---------- */
+.hud-wrapper {
+  position: absolute;
+  top: calc(env(safe-area-inset-top, 0px) + 8px);
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(8px, 2.5vw, 24px);
+  padding: 8px 16px;
+  z-index: 25;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.hud-wrapper.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-20px);
+}
+
+.triad-box {
+  background: linear-gradient(180deg, rgba(21, 21, 23, 0.96), rgba(10, 10, 12, 0.98));
+  border: 1.5px solid rgba(242, 239, 233, 0.2);
+  clip-path: polygon(10px 0, 100% 0, 100% 100%, 0 100%, 0 10px);
+  padding: 6px 14px 7px;
+  min-width: 110px;
+  text-align: left;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.6);
+  position: relative;
+  transition: border-color 0.3s ease;
+}
+.triad-box:hover {
+  border-color: var(--gold);
+}
+.triad-box .label {
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--paper-dim);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 3px;
+  font-weight: 700;
+}
+.triad-box .bar {
+  width: 100%;
+  height: 7px;
+  background: #000;
+  position: relative;
+  overflow: hidden;
+  border-radius: 1px;
+}
+.triad-box .bar span {
+  display: block;
+  height: 100%;
+  transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.4s ease;
+}
+.triad-box .pct {
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  margin-top: 3px;
+  color: var(--paper);
+  font-weight: 700;
+}
+
+/* Audio & Inspector utility toolbar */
+.top-toolbar {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  display: flex;
+  gap: 10px;
+  z-index: 30;
+}
+.top-toolbar-content {
+  display: flex;
+  gap: 10px;
+}
+.tool-btn.mobile-menu-btn {
+  display: none;
+}
+.tool-btn {
+  background: rgba(21, 21, 23, 0.85);
+  border: 1.5px solid var(--paper-dim);
+  color: var(--paper);
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  padding: 6px 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+  transition: all 0.15s ease;
+}
+.tool-btn:hover {
+  background: var(--red);
+  border-color: var(--paper);
+  color: #fff;
+  transform: translateY(-2px);
+}
+.tool-btn.active {
+  background: var(--gold);
+  color: #000;
+  border-color: #fff;
+  font-weight: 700;
+}
+
+@media (max-width: 600px) {
+  .hud-wrapper {
+    top: auto;
+    bottom: 0;
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 8px);
+    gap: 4px;
+    background: rgba(0,0,0,0.6);
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .triad-box {
+    min-width: 0;
+    flex: 1;
+    padding: 6px 8px;
+  }
+  .triad-box .label {
+    font-size: 9px;
+  }
+  .triad-box .pct {
+    font-size: 10px;
+  }
+  .top-toolbar {
+    top: 6px;
+    right: 8px;
+    gap: 0;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  .mobile-menu-btn {
+    display: flex;
+    width: 32px;
+    height: 32px;
+    justify-content: center;
+    padding: 0;
+  }
+  .top-toolbar-content {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 8px;
+    background: rgba(10,10,12,0.9);
+    padding: 8px;
+    border: 1px solid var(--paper-dim);
+  }
+  .top-toolbar.open .top-toolbar-content {
+    display: flex;
+  }
+  .hide-mobile {
+    display: inline; /* We want text in the mobile dropdown! */
+  }
+  .volume-control-wrapper {
+    justify-content: space-between;
+  }
+}

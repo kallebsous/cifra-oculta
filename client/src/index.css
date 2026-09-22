@@ -1,0 +1,168 @@
+:root {
+  --ink: #0a0a0c;
+  --panel: #151517;
+  --panel-2: #1e1e21;
+  --red: #e10d2c;
+  --red-dim: #7a0818;
+  --paper: #f2efe9;
+  --paper-dim: #c9c5bb;
+  --gold: #ffc72c;
+  --safe: #28c37a;
+  --leak: #e10d2c;
+  font-family: 'Barlow Condensed', sans-serif;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background: var(--ink);
+  color: var(--paper);
+  overflow: hidden;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+.app-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(ellipse at 25% 10%, #291016 0%, transparent 60%),
+    radial-gradient(ellipse at 85% 85%, #18090d 0%, transparent 50%),
+    repeating-linear-gradient(135deg, #000 0 2px, #0a0a0c 2px 42px),
+    var(--ink);
+  overflow: hidden;
+}
+
+/* ---------- Persona 5 diagonal slash decor ---------- */
+.slash-decor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+.slash-decor i {
+  position: absolute;
+  background: var(--red);
+  clip-path: polygon(0 0, 100% 0, 78% 100%, 0% 100%);
+  opacity: 0.9;
+}
+.slash-decor i.s1 {
+  width: 44vw;
+  height: 16px;
+  left: -4vw;
+  bottom: 10%;
+  transform: rotate(-7deg);
+  opacity: 0.85;
+}
+.slash-decor i.s2 {
+  width: 26vw;
+  height: 7px;
+  left: -2vw;
+  bottom: 7%;
+  transform: rotate(-7deg);
+  background: var(--paper);
+  opacity: 0.5;
+}
+.slash-decor i.s3 {
+  width: 65vw;
+  height: 3px;
+  right: -6vw;
+  top: 12%;
+  transform: rotate(-7deg);
+  background: var(--paper);
+  opacity: 0.15;
+}
+.slash-decor i.s4 {
+  width: 18vw;
+  height: 12px;
+  right: -2vw;
+  top: 25%;
+  transform: rotate(-7deg);
+  background: var(--gold);
+  opacity: 0.35;
+}
+
+
+/* ---------- Buttons ---------- */
+.btn {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 0.06em;
+  background: var(--red);
+  color: #fff;
+  border: none;
+  padding: 13px 36px 11px;
+  clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+  cursor: pointer;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.6);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.7);
+  background: #ff1536;
+}
+.btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.7);
+}
+.btn.gold {
+  background: var(--gold);
+  color: #0a0a0c;
+}
+.btn.gold:hover {
+  background: #ffd659;
+}
+.btn.ghost {
+  background: transparent;
+  border: 2px solid var(--paper);
+  color: var(--paper);
+  box-shadow: none;
+}
+.btn.ghost:hover {
+  background: rgba(242, 239, 233, 0.12);
+  border-color: #fff;
+}
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);
+}
+
+footer.credit {
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 12px;
+  color: rgba(242, 239, 233, 0.35);
+  z-index: 2;
+  letter-spacing: 0.05em;
+  font-family: 'Space Mono', monospace;
+}
+
+/* ---------- Responsiveness ---------- */
+/* Removed component-specific media queries as they are now in their respective .css files */

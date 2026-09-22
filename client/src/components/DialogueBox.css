@@ -1,0 +1,175 @@
+/* ---------- Dialogue Box (Persona 5 style) ---------- */
+.dialogue-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  pointer-events: auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0 4vw calc(18px + env(safe-area-inset-bottom, 0px));
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.2s;
+}
+
+.dialogue-wrap.variant-top {
+  align-items: flex-start;
+  padding-top: calc(54px + env(safe-area-inset-top, 0px));
+}
+
+.dialogue-wrap.variant-top .dialogue-container {
+  transform: scale(1.15);
+  transform-origin: top center;
+}
+
+.dialogue-wrap.hidden {
+  opacity: 0;
+  transform: translateY(30px);
+  pointer-events: none;
+}
+.dialogue-container {
+  position: relative;
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+/* Background strips for the portrait (Persona 5 style "faixas") */
+.portrait-backdrop {
+  position: absolute;
+  top: -54px;
+  left: 14px;
+  width: 92px;
+  height: 92px;
+  background: var(--red);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  z-index: 2;
+  animation: pulseRotate 10s linear infinite;
+  opacity: 0.9;
+}
+.portrait-backdrop.villain {
+  background: var(--gold);
+}
+@keyframes pulseRotate {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.05); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+.portrait {
+  position: absolute;
+  top: -46px;
+  left: 24px;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--panel-2);
+  border: 3px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.6);
+  z-index: 3;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.portrait.villain {
+  border-color: #000;
+}
+
+.speaker-wrap {
+  position: absolute;
+  top: -26px;
+  left: 82px;
+  z-index: 4;
+  filter: drop-shadow(4px 4px 0 rgba(0,0,0,0.6));
+}
+.speaker {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 0.04em;
+  color: #fff;
+  background: var(--red);
+  padding: 4px 18px 2px 28px;
+  clip-path: polygon(14px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.speaker .dot {
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  transform: rotate(45deg);
+  display: inline-block;
+}
+.speaker.villain {
+  background: var(--gold);
+  color: #000;
+}
+.speaker.villain .dot {
+  background: #000;
+}
+
+.dialogue-box {
+  position: relative;
+  background: linear-gradient(180deg, rgba(18, 18, 20, 0.98), rgba(8, 8, 9, 0.99));
+  border: 2px solid var(--paper);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%);
+  padding: 24px 28px 18px 94px; /* padding-left to leave space for portrait */
+  min-height: 104px;
+  cursor: pointer;
+  box-shadow: 6px 6px 0 rgba(0,0,0,0.7);
+  z-index: 1; /* Underneath portrait and speaker */
+}
+.dialogue-text {
+  font-size: 19px;
+  line-height: 1.35;
+  font-weight: 500;
+  min-height: 48px;
+  color: var(--paper);
+}
+.dialogue-next {
+  position: absolute;
+  right: 22px;
+  bottom: 14px;
+  font-size: 13px;
+  color: var(--paper-dim);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: 0.05em;
+  font-family: 'Space Mono', monospace;
+}
+.dialogue-next .arrow {
+  animation: bob 1s ease-in-out infinite;
+  color: var(--red);
+  font-size: 14px;
+}
+
+@media (max-width: 600px) {
+  .dialogue-wrap {
+    padding: 0 0 calc(12px + env(safe-area-inset-bottom, 0px));
+  }
+  .dialogue-wrap.variant-top {
+    padding-top: calc(45px + env(safe-area-inset-top, 0px));
+  }
+  .dialogue-wrap.variant-top .dialogue-container {
+    transform: scale(0.95);
+  }
+  .portrait {
+    width: 64px;
+    height: 64px;
+    left: 12px;
+    top: -30px;
+  }
+  .speaker-wrap {
+    margin-left: 70px;
+  }
+  .dialogue-box {
+    margin-left: 12px;
+    margin-right: 12px;
+    padding: 24px 20px 20px;
+  }
+  .dialogue-text {
+    font-size: 15px;
+  }
+}

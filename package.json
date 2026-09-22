@@ -1,0 +1,27 @@
+{
+  "name": "operacao-cifra-oculta-monorepo",
+  "version": "1.0.0",
+  "description": "Operação Cifra Oculta — Aplicação Educativa de Segurança da Informação (React + Node.js)",
+  "scripts": {
+    "dev": "concurrently -n \"SERVER,CLIENT\" -c \"magenta,cyan\" \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "dev:server": "npm run dev --prefix server",
+    "dev:client": "npm run dev --prefix client",
+    "build": "npm run build --prefix client",
+    "start": "node server/src/index.js",
+    "test": "npm test --prefix server",
+    "postinstall": "npm install --prefix server && npm install --prefix client"
+  },
+  "keywords": [
+    "segurança-da-informacao",
+    "confidencialidade",
+    "triade-cia",
+    "react",
+    "nodejs",
+    "persona-5"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^10.0.5"
+  }
+}
