@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { GamePhase, TriadMetrics, DialogueLine, Equipment, DispatchResult } from './types/game';
 import { HUD } from './components/HUD';
+import { CommanderIcon } from './components/CommanderIcon';
 import { DialogueBox } from './components/DialogueBox';
 import { PacketInspector } from './components/PacketInspector';
 import { QuizModal } from './components/QuizModal';
@@ -151,17 +152,17 @@ export const App: React.FC = () => {
             },
             {
               name: 'COMANDANTE',
-              portrait: <User size={42} strokeWidth={1.5} />,
+              portrait: <CommanderIcon size={42} strokeWidth={1.5} />,
               text: 'E não foi só ele. Olha o log do relé: três estações intermediárias também abriram o pacote sem querer, só de curiosidade.'
             },
             {
               name: 'COMANDANTE',
-              portrait: <User size={42} strokeWidth={1.5} />,
+              portrait: <CommanderIcon size={42} strokeWidth={1.5} />,
               text: 'Confidencialidade não é "esconder do inimigo". É garantir que SÓ quem tem permissão consiga entender — mesmo que o pacote passe pelas mãos de todo mundo no meio do caminho.'
             },
             {
               name: 'COMANDANTE',
-              portrait: <User size={42} strokeWidth={1.5} />,
+              portrait: <CommanderIcon size={42} strokeWidth={1.5} />,
               text: 'O satélite recebeu certinho, mas isso não foi vitória nenhuma. Entregar sem embaralhar é como gritar o segredo no meio da rua: a carta chega, mas todo mundo no caminho também ouve.'
             }
           ],
@@ -285,24 +286,24 @@ export const App: React.FC = () => {
         ? [
             {
               name: 'COMANDANTE',
-              portrait: <User size={42} strokeWidth={1.5} />,
+              portrait: <CommanderIcon size={42} strokeWidth={1.5} />,
               text: 'Cofre travado E lista de acesso ativa. Dupla camada: mesmo quem intercepta o cabo, e mesmo quem tenta pedir o dado sem autorização, sai no zero a zero.'
             },
             {
               name: 'COMANDANTE',
-              portrait: <User size={42} strokeWidth={1.5} />,
+              portrait: <CommanderIcon size={42} strokeWidth={1.5} />,
               text: 'Sem a chave, tudo que ele vai ver é embaralhado. Manda ver.'
             }
           ]
         : [
             {
               name: 'COMANDANTE',
-              portrait: <User size={42} strokeWidth={1.5} />,
+              portrait: <CommanderIcon size={42} strokeWidth={1.5} />,
               text: 'Cofre travado na mensagem. Pode deixar o Agente V interceptar à vontade dessa vez.'
             },
             {
               name: 'COMANDANTE',
-              portrait: <User size={42} strokeWidth={1.5} />,
+              portrait: <CommanderIcon size={42} strokeWidth={1.5} />,
               text: 'Sem a chave, tudo que ele vai ver é embaralhado. Manda ver.'
             }
           ]
@@ -340,17 +341,17 @@ export const App: React.FC = () => {
             },
             {
               name: 'COMANDANTE',
-              portrait: <User size={42} strokeWidth={1.5} />,
+              portrait: <CommanderIcon size={42} strokeWidth={1.5} />,
               text: 'Aí sim. O pacote chegou inteiro pro Ícaro E virou lixo ilegível pra quem interceptou. Isso é Confidencialidade.'
             },
             {
               name: 'COMANDANTE',
-              portrait: <User size={42} strokeWidth={1.5} />,
+              portrait: <CommanderIcon size={42} strokeWidth={1.5} />,
               text: 'Repara: o Agente V nunca foi impedido de capturar o pacote. Só foi impedido de entender ele.'
             },
             {
               name: 'COMANDANTE',
-              portrait: <User size={42} strokeWidth={1.5} />,
+              portrait: <CommanderIcon size={42} strokeWidth={1.5} />,
               text: 'Uma última coisa antes de comemorar: o segredo agora é a chave. Se ela vazar, cai tudo junto — proteger uma mensagem cifrada é, no fundo, proteger quem guarda a chave.'
             }
           ],
