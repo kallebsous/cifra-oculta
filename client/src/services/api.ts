@@ -58,28 +58,174 @@ export async function fetchEquipmentList(): Promise<Equipment[]> {
 }
 
 export async function dispatchPacketApi(equipment: string[], customPayload?: string): Promise<DispatchResult> {
-  const res = await fetch(`${API_BASE}/dispatch`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ equipment, customPayload })
-  });
-  if (!res.ok) throw new Error('Erro ao despachar pacote');
-  return res.json();
+  try {
+    const res = await fetch(`${API_BASE}/dispatch`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ equipment, customPayload })
+    });
+    if (!res.ok) throw new Error('Erro ao despachar pacote');
+    return await res.json();
+  } catch (err) {
+    console.warn('[API] Usando dispatch de fallback local', err);
+    return simulateDispatchFallback(equipment, customPayload);
+  }
 }
 
 export async function fetchQuiz(): Promise<QuizQuestion[]> {
-  const res = await fetch(`${API_BASE}/quiz`);
-  if (!res.ok) throw new Error('Erro ao carregar quiz');
-  const data = await res.json();
-  return data.questions;
+  try {
+    const res = await fetch(`${API_BASE}/quiz`);
+    if (!res.ok) throw new Error('Erro ao carregar quiz');
+    const data = await res.json();
+    return data.questions;
+  } catch (err) {
+    console.warn('[API] Usando quiz local de fallback', err);
+    return FALLBACK_QUIZ;
+  }
 }
 
 export async function evaluateQuizApi(answers: Record<number, string>): Promise<QuizEvaluationResult> {
-  const res = await fetch(`${API_BASE}/quiz/evaluate`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ answers })
-  });
-  if (!res.ok) throw new Error('Erro ao submeter quiz');
-  return res.json();
+  try {
+    const res = await fetch(`${API_BASE}/quiz/evaluate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ answers })
+    });
+    if (!res.ok) throw new Error('Erro ao submeter quiz');
+    return await res.json();
+  } catch (err) {
+    console.warn('[API] Usando evaluation local de fallback', err);
+    return simulateQuizEvaluation(answers);
+  }
+}
+
+// --- FALLBACK LOGIC PARA VERCEL (FRONTEND ONLY) ---
+
+function simulateDispatchFallback(equipment: string[], customPayload?: string): DispatchResult {
+  const payload = customPayload || "COORD-4471-ÍCARO [LAT: -23.5505, LON: -46.6333, ALT: 420km, AZ: 128.4°]";
+  const hasCofre = equipment.includes('cofre');
+  const hasLista = equipment.includes('lista');
+  const hasAntivirus = equipment.includes('antivirus');
+  const hasTurbo = equipment.includes('turbo');
+
+  const fakeHash = Array.from({length: 16}, () => Math.floor(Math.random()*16).toString(16)).join('');
+  const fakeIv = Array.from({length: 24}, () => Math.floor(Math.random()*16).toString(16)).join('');
+  
+  let encryptedPayload = null;
+  let decryptedText = null;
+  if (hasCofre) {
+    encryptedPayload = Array.from({length: 32}, () => Math.floor(Math.random()*16).toString(16)).join('');
+    decryptedText = payload;
+  }
+
+  const nodeLogs = [
+    {
+      step: 1,
+      node: "CONSOLE TERRESTRE",
+      status: "DISPATCHED",
+      protocol: hasCofre ? "TLS 1.3 / AES-256-GCM" : "RAW / HTTP PLAINTEXT",
+      visibleData: hasCofre ? `CIPHERTEXT: ${encryptedPayload?.substring(0, 24)}... (IV: ${fakeIv})` : payload,
+      notes: hasLista ? "Controle de Acesso: Token de autorização assinado anexado." : "Sem restrição de requisição."
+    },
+    {
+      step: 2,
+      node: "ESTAÇÃO RELÉ ALFA",
+      status: "FORWARDED",
+      protocol: "PACKET INSPECT",
+      visibleData: hasCofre ? "[BLOCO ILEGÍVEL DE BYTES]" : payload,
+      notes: hasCofre ? "Relé encaminhou sem conseguir ler o miolo." : "Operador do relé leu as coordenadas completas no log de auditoria."
+    },
+    {
+      step: 3,
+      node: "AGENTE V (SNIFFER / TAP)",
+      status: "INTERCEPTED",
+      protocol: "PROMISCUOUS TAP",
+      visibleData: hasCofre ? `#&7f!$*0x${encryptedPayload?.substring(0, 16)} [SEM CHAVE PRIVADA]` : payload,
+      notes: hasCofre
+        ? "Agente V capturou 100% dos bytes, mas sem a chave privada de Ícaro só obteve entropia inútil."
+        : "Vazamento total! Agente V copiou coordenadas de lançamento sem deixar vestígios."
+    },
+    {
+      step: 4,
+      node: "SATÉLITE ÍCARO",
+      status: "RECEIVED",
+      protocol: "FINAL DESTINATION",
+      visibleData: hasCofre ? `DECIFRADO: ${decryptedText}` : payload,
+      integrityCheck: `SHA-256: ${fakeHash} (CONFERE)`,
+      notes: "Sinal recebido. " + (hasCofre ? "Chave privada combinada com sucesso." : "Conteúdo recebido em claro.")
+    }
+  ];
+
+  return {
+    success: true,
+    timestamp: new Date().toISOString(),
+    equipmentUsed: equipment,
+    stats: { hasCofre, hasLista, hasAntivirus, hasTurbo, transitSpeedMs: hasTurbo ? 400 : 1200 },
+    triad: { connection: 100, data: 100, secret: hasCofre ? 100 : 0 },
+    payload: { original: payload, isEncrypted: hasCofre, ciphertext: encryptedPayload || undefined, iv: fakeIv, authTag: "fake-auth", hashSha256: fakeHash },
+    nodeLogs,
+    summary: {
+      outcome: hasCofre ? "VITÓRIA CIFRADA" : "DERROTA SILENCIOSA",
+      verdict: hasCofre ? "Confidencialidade mantida: o pacote foi capturado, mas a mensagem permaneceu secreta." : "Falha de Confidencialidade: a entrega funcionou, mas o segredo vazou."
+    }
+  };
+}
+
+const FALLBACK_QUIZ: QuizQuestion[] = [
+  {
+    id: 1,
+    question: "Por que o Firewall não impediu o Agente V de ler as coordenadas?",
+    options: [
+      { id: "A", text: "Porque o Agente V já possuía a chave privada de decifração." },
+      { id: "B", text: "Porque firewalls protegem a Disponibilidade e tráfego não autorizado, mas não alteram a legibilidade de dados interceptados em trânsito.", correct: true },
+      { id: "C", text: "Porque o firewall apenas diminui a velocidade de entrega do sinal." },
+      { id: "D", text: "Porque firewalls só funcionam quando combinados com turbo de propulsão." }
+    ],
+    explanation: "Firewalls atuam filtrando portas e pacotes suspeitos para manter a disponibilidade e integridade do perímetro. Contudo, dados trafegando em texto puro (HTTP/plaintext) podem ser espionados por qualquer nó ou sniffer na rota."
+  },
+  {
+    id: 2,
+    question: "Qual é a diferença essencial entre Controle de Acesso e Criptografia?",
+    options: [
+      { id: "A", text: "Controle de Acesso define QUEM pode solicitar o dado; Criptografia esconde o CONTEÚDO caso o tráfego seja interceptado.", correct: true },
+      { id: "B", text: "São nomes diferentes para a mesma tecnologia de proteção por senha." },
+      { id: "C", text: "Controle de Acesso protege a integridade e Criptografia protege a velocidade." },
+      { id: "D", text: "Criptografia é apenas para servidores web, enquanto controle de acesso é para satélites." }
+    ],
+    explanation: "São camadas complementares! A Lista de Acesso impede que nós não autorizados façam requisições legítimas. Já a Criptografia garante que, mesmo com escuta clandestina no canal (eavesdropping/MITM), a mensagem seja ininteligível sem a chave."
+  },
+  {
+    id: 3,
+    question: "Ao cifrar uma mensagem secreta, onde passa a residir a responsabilidade de segurança?",
+    options: [
+      { id: "A", text: "No cabo físico de transmissão, que não pode ser rompido." },
+      { id: "B", text: "Na custódia e guarda da Chave Privada de decifração.", correct: true },
+      { id: "C", text: "A responsabilidade acaba, pois mensagens cifradas são imunes a qualquer ataque." },
+      { id: "D", text: "Exclusivamente no provedor de internet do satélite." }
+    ],
+    explanation: "A criptografia transforma o segredo do texto no segredo da chave. Proteger uma mensagem cifrada é, na prática, proteger a custódia das chaves criptográficas (gerenciamento de chaves / KMS)."
+  }
+];
+
+function simulateQuizEvaluation(answers: Record<number, string>): QuizEvaluationResult {
+  let score = 0;
+  const results = [];
+  for (const q of FALLBACK_QUIZ) {
+    const userAnswer = answers[q.id];
+    const correctOption = q.options.find(o => o.correct);
+    const isCorrect = userAnswer === correctOption?.id;
+    if (isCorrect) score++;
+    results.push({
+      questionId: q.id,
+      correct: isCorrect,
+      correctAnswer: correctOption?.id || '',
+      explanation: q.explanation
+    });
+  }
+  return {
+    score,
+    total: FALLBACK_QUIZ.length,
+    passed: score === FALLBACK_QUIZ.length,
+    results
+  };
 }
